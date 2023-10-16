@@ -17,12 +17,7 @@ public class QuantityDiscount extends BaseDiscount {
 
     @Override
     protected double calculateDiscount(Product product) {
-        return isApplicable(product) ? DISCOUNT_AMOUNT : 0;
-    }
-
-    @Override
-    public double apply(Product product) {
-        return nextDiscount.apply(product) + calculateDiscount(product);
+        return DISCOUNT_AMOUNT;
     }
 
     @Override
