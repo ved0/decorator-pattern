@@ -2,23 +2,19 @@ package org.example.discounts;
 
 import org.example.products.Product;
 
+import java.text.DecimalFormat;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class FunctionalDiscount extends BaseDiscount {
-    private final Function<Product, Boolean> isApplicable;
+    private final Predicate<Product> isApplicable;
     private final Function<Product, Double> calculateDiscount;
     private String description;
 
-    public FunctionalDiscount(Discount discount, Function<Product, Boolean> isApplicable, Function<Product, Double> calculateDiscount) {
+    public FunctionalDiscount(Discount discount, Predicate<Product> isApplicable, Function<Product, Double> calculateDiscount) {
         super(discount);
         this.isApplicable = isApplicable;
         this.calculateDiscount = calculateDiscount;
-    }
-
-
-    @Override
-    public double apply(Product product) {
-        return nextDiscount.apply(product) + calculateDiscount(product);
     }
 
     public void setDescription(String description) {
@@ -27,19 +23,21 @@ public class FunctionalDiscount extends BaseDiscount {
 
     @Override
     public String getDescription(Product product) {
-        return isApplicable(product) ?
-                description == null ?
-                        "\nEnjoy your " + product.productName() + "! You saved this much money " + calculateDiscount(product) + "!" :
-                        "\n" + description : "\n" + product.productName() + " is not valid for this discount!";
+        String whatDescription = isApplicable(product) ?
+                                    description == null ?
+                                        "\nEnjoy your " + product.productName().toLowerCase() + "! You saved this much money " +  new DecimalFormat("#.##").format(calculateDiscount(product)) + " kr, with this discount!" :
+                                        "\n" + description :
+                                    "\n" + product.productName().toLowerCase() + " is not valid for this discount!";
+        return whatDescription + nextDiscount.getDescription(product);
     }
 
     @Override
     protected boolean isApplicable(Product product) {
-        return isApplicable.apply(product);
+        return isApplicable.test(product);
     }
 
     @Override
     protected double calculateDiscount(Product product) {
-        return isApplicable(product) ? calculateDiscount.apply(product) : 0;
+        return calculateDiscount.apply(product);
     }
 }

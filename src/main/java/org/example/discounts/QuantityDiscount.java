@@ -27,9 +27,9 @@ public class QuantityDiscount extends BaseDiscount {
 
     @Override
     public String getDescription(Product product) {
-        String description = isApplicable(product) ? "\nYou bought more than " + LEAST_PRODUCT_AMOUNT + " of " + product.productName() +
-                ", so here is a " + DISCOUNT_AMOUNT + " kr discount" :
-                "\nYou dont have enough items for this discount";
+        String description = isApplicable(product) ? "\nYou have bought more than " + LEAST_PRODUCT_AMOUNT + " of " + product.productName().toLowerCase() +
+                ", so here is a " + DISCOUNT_AMOUNT + " kr discount!" :
+                "\nYou dont have enough items for this discount!";
         return description + nextDiscount.getDescription(product);
     }
 }

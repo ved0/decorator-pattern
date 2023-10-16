@@ -8,9 +8,10 @@ public abstract class BaseDiscount implements Discount {
     public BaseDiscount(Discount discount) {
         this.nextDiscount = discount;
     }
+
     @Override
     public double apply(Product product) {
-        return nextDiscount.apply(product);
+        return isApplicable(product) ? nextDiscount.apply(product) + calculateDiscount(product) : nextDiscount.apply(product);
     }
 
     @Override

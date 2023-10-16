@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @DisplayName("Test of discounts implemented with functional interfaces")
 public class FunctionalDiscountTest {
@@ -23,9 +24,9 @@ public class FunctionalDiscountTest {
     @BeforeEach
     void createDiscounts() {
         //Discount conditions
-        Function<Product, Boolean> productNameToiletPaper = product -> product.productName().equalsIgnoreCase("Toilet paper");
-        Function<Product, Boolean> productQuantityPriceMoreThan1000 = product -> product.price() * product.quantity() >= 1000;
-        Function<Product, Boolean> productPriceLessThan20 = product -> product.price() <= 20;
+        Predicate<Product> productNameToiletPaper = product -> product.productName().equalsIgnoreCase("Toilet paper");
+        Predicate<Product> productQuantityPriceMoreThan1000 = product -> product.price() * product.quantity() >= 1000;
+        Predicate<Product> productPriceLessThan20 = product -> product.price() <= 20;
         //Discount amount
         Function<Product, Double> productNameDiscount = product -> product.price() * product.quantity() * toiletPaperDiscount;
         Function<Product, Double> productQuantityPriceDiscount = product -> quantityPriceDiscount;
